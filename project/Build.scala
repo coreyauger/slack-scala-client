@@ -5,7 +5,7 @@ import sbtrelease._
 
 object BuildSettings {
   val buildOrganization = "im.conversant"
-  val buildVersion      = "0.1.8-SNAPSHOT"
+  val buildVersion      = "0.1.8"
   val buildScalaVersion = "2.11.8"
 
   val buildSettings = Defaults.defaultSettings ++ Seq (
