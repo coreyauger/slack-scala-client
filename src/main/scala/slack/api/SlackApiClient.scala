@@ -146,6 +146,16 @@ class SlackApiClient(token: String) {
     extract[Seq[Channel]](res, "channels")
   }
 
+  def listChats(excludeArchived: Int = 0)(implicit ec: ExecutionContext): Future[Seq[Chat]] = {
+    for{
+      c <- listChannels(excludeArchived)
+      i <- listIms()
+      g <- listGroups(excludeArchived)
+    }yield{
+      Seq(c, g, i).flatten
+    }
+  }
+
   def leaveChannel(channelId: String)(implicit ec: ExecutionContext): Future[Boolean] = {
     val res = makeApiMethodRequest("channels.leave", "channel" -> channelId)
     extract[Boolean](res, "ok")

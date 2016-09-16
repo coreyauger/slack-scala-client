@@ -15,16 +15,10 @@ case class Channel (
   is_mpim: Option[Boolean],
   num_members: Option[Int],
   members: Option[Seq[String]],
-  topic: Option[ChannelValue],
-  purpose: Option[ChannelValue],
+  topic: Option[ChatValue],
+  purpose: Option[ChatValue],
   last_read: Option[String],
   latest: Option[JsValue],
   unread_count: Option[Int],
   unread_count_display: Option[Int]
-)
-
-case class ChannelValue (
-  value: String,
-  creator: String,
-  last_set: Long
-)
+) extends Chat

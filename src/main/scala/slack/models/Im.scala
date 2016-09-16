@@ -6,4 +6,4 @@ case class Im (
   user: String,
   created: Long,
   is_user_deleted: Option[Boolean]
-)
+) extends Chat

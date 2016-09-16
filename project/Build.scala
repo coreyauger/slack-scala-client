@@ -4,55 +4,31 @@ import com.typesafe.sbt.SbtPgp.autoImport._
 import sbtrelease._
 
 object BuildSettings {
-  val buildOrganization = "com.github.gilbertw1"
-  val buildVersion      = "0.1.7"
+  val buildOrganization = "im.conversant"
+  val buildVersion      = "0.1.8-SNAPSHOT"
   val buildScalaVersion = "2.11.8"
 
   val buildSettings = Defaults.defaultSettings ++ Seq (
     organization := buildOrganization,
     version      := buildVersion,
     scalaVersion := buildScalaVersion,
-    publishMavenStyle := true,
+    //publishMavenStyle := true,
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
     publishTo := {
-      val nexus = "https://oss.sonatype.org/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-    },
-    publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-    pomExtra := (
-      <url>https://github.com/gilbertw1/slack-scala-client</url>
-      <licenses>
-        <license>
-          <name>MIT</name>
-          <url>https://opensource.org/licenses/MIT</url>
-          <distribution>repo</distribution>
-        </license>
-      </licenses>
-      <scm>
-        <url>git@github.com:gilbertw1/slack-scala-client.git</url>
-        <connection>scm:git:git@github.com:gilbertw1/slack-scala-client.git</connection>
-      </scm>
-      <developers>
-        <developer>
-          <id>gilbertw1</id>
-          <name>Bryan Gilbert</name>
-          <url>http://bryangilbert.com</url>
-        </developer>
-      </developers>)
+      Some("NextWave Repo" at "http://maxdevmaster.cloudapp.net:4343/artifactory/nxtwv-maven/")
+    }
   )
 }
 
 object Resolvers {
   val typesafeRepo = "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
+  val nxtwvReop = "NextWave Repo" at "http://maxdevmaster.cloudapp.net:4343/artifactory/nxtwv-maven/"
 }
 
 object Dependencies {
   val akkaVersion = "2.4.8"
   val sprayVersion = "1.3.3"
-  val playVersion = "2.5.4"
+  val playVersion = "2.4.6"
 
   val akkaActor = "com.typesafe.akka" %% "akka-actor" % akkaVersion
   val akkaSlf4j = "com.typesafe.akka" %% "akka-slf4j" % akkaVersion
@@ -81,7 +57,7 @@ object SlackScalaClient extends Build {
   lazy val slackScalaClient =
     Project ("slack-scala-client", file("."))
       .settings ( buildSettings : _* )
-      .settings ( resolvers ++= Seq(typesafeRepo) )
+      .settings ( resolvers ++= Seq(typesafeRepo, nxtwvReop) )
       .settings ( libraryDependencies ++= Dependencies.allDependencies )
       .settings ( dependencyOverrides += "io.spray" %% "spray-can" % Dependencies.sprayVersion)
       .settings ( scalacOptions ++= Seq("-unchecked", "-deprecation", "-Xlint", "-Xfatal-warnings", "-feature") )
